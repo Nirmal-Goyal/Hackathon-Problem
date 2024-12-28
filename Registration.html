@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eSports Tournament Registration</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            background-color: #111827; /* Dark background */
+            color: #E2E8F0; /* Light text */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 35px;
+            background: linear-gradient(135deg, #2d3748, #4A5568); /* Gradient background */
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .header {
+            font-size: 30px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #48BB78; /* Light green */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 18px;
+            color: #EDF2F7;
+            transition: color 0.3s;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            border-radius: 12px;
+            border: 1px solid #4A5568;
+            background-color: #2D3748;
+            color: #EDF2F7;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #48BB78;
+            outline: none;
+            box-shadow: 0 0 5px rgba(72, 187, 120, 0.7);
+        }
+
+        .form-group input::placeholder {
+            color: #A0AEC0;
+        }
+
+        .form-group input:focus::placeholder {
+            color: #48BB78; /* Light green placeholder */
+        }
+
+        .button {
+            width: 100%;
+            background-color: #48BB78;
+            color: white;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 12px;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #38A169; /* Darker green on hover */
+            transform: translateY(-3px); /* Lift effect */
+        }
+
+        .button:active {
+            background-color: #2F855A; /* Even darker green */
+            transform: translateY(0); /* Reset the lift effect */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #E2E8F0;
+            font-size: 14px;
+        }
+
+        .footer a {
+            text-decoration: underline;
+            color: #48BB78; /* Light green */
+        }
+
+        /* Keyframe for fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Success notification animation */
+        .success-message {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #48BB78;
+            color: white;
+            border-radius: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="header">eSports Tournament Registration</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="15" required placeholder="Enter your age">
+            </div>
+
+            <!-- Player ID Section -->
+            <div class="form-group">
+                <label for="playerId">Player ID</label>
+                <input type="text" id="playerId" name="playerId" required placeholder="Enter your Player ID">
+            </div>
+
+            <button type="button" class="button" id="paymentButton" onclick="location.href='Registration3.html';">Proceed to Payment</button>
+        </form>
+
+        <div class="footer">
+            <p>By submitting this form, you agree to our <a href="#">Terms & Conditions</a>.</p>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

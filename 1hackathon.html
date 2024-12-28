@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClashWin - Gaming Tournaments</title>
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="shortcut icon" href="public/images/logo2.ico" type="image/x-icon">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        #preloader h2 {
+            font-family: 'Press Start 2P', sans-serif;
+            color: #00ff6a;
+            font-size: 2rem;
+            animation: fadeIn 6s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        body.loaded {
+            overflow: auto;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #121212;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-family: 'Press Start 2P', sans-serif;
+            color: #00ff6a;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #00ff6a;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
+            height: 500px;
+        }
+
+        .hero-left {
+            width: 50%;
+        }
+
+        .hero-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00ff6a;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content a {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background-color: #00ff6a;
+            color: #121212;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .hero-content a:hover {
+            background-color: #00d95c;
+            transform: scale(1.1);
+        }
+
+        .hero-right {
+            width: 45%;
+        }
+        iframe{
+            border-radius: 20px;
+            width: 550px;
+            height: 400px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
+        }
+
+
+        .tournament {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #141414;
+            height: 550px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            background: linear-gradient(to bottom right, rgba(13, 240, 221, 0.436), rgba(0, 0, 0, 0.7));
+            box-shadow: 0px 10px 20px rgba(2, 3, 52, 0.6);
+        }
+
+        .service-card h3 {
+            margin: 10px 0;
+            color: #00d95c;
+            font-size: 1.5rem;
+        }
+
+        .service-card p {
+            color: #BDC3C7;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .service-card i {
+            font-size: 4rem;
+            color: #1ABC9C;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover i {
+            color: white;
+        }
+
+        .price-pool {
+            font-size: 1.2rem;
+            color: #007bff;
+            margin: 15px 0;
+        }
+
+        .join-button {
+            background-color: #070d75;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .join-button:hover {
+            background-color: #070d75;
+            transform: scale(1.05);
+        }
+
+        .info-content{
+            display: block;
+        }
+        /* Info Button */
+        .info-button {
+            background-color: #2e9b0d;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+
+        /* Info Section Styling */
+        .info-content {
+            display: block;
+            background-color: #3880f4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Media Query for Smaller Screens */
+        @media (max-width: 768px) {
+            .service-card {
+                padding: 20px;
+            }
+
+            .service-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .service-card i {
+                font-size: 3rem;
+            }
+        }
+
+        /* Section Styling */
+        .games-included {
+        background-color: #141414;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        height: 550px;
+        }
+
+        .games-included h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        }
+
+        /* Slider Wrapper */
+        .game-slider {
+        display: flex;
+        align-items: center;
+        position: relative;
+        }
+
+        .slider-wrapper {
+        overflow: hidden;
+        width: 90%;
+        margin: 0 auto;
+        }
+
+        .slider {
+        display: flex;
+        transition: transform 0.5s ease;
+        }
+
+        /* Game Card */
+        .game-card {
+        min-width: 270px;
+        max-height: 400px;
+        margin: 10px;
+        position: relative;
+        background-color: #1f1f1f;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        }
+
+        .game-card img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        }
+
+        .play-now {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ff6a00;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover .play-now {
+        opacity: 1;
+        }
+
+        /* Navigation Buttons */
+        .nav-button {
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        }
+
+        .nav-button:hover {
+        background-color: #ff6a00;
+        }
+
+        .nav-button.prev {
+        left: 10px;
+        }
+
+        .nav-button.next {
+        right: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+        margin-top: 10px;
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.2);
+        position: relative;
+        }
+
+        .progress {
+        height: 5px;
+        background-color: #ff6a00;
+        width: 0%;
+        transition: width 0.5s ease;
+        }
+
+
+        .carousel-container {
+      width: 90%;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 cards in the first row */
+      grid-template-rows: auto auto; /* 2 rows for cards */
+      gap: 20px; /* Space between cards */
+    }
+
+    .card {
+      background-color: #222;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s;
+      max-width: 350px;
+      max-height: 500px;
+      margin: 0 auto;
+    }
+
+    .card:hover {
+      transform: scale(1.01);
+      box-shadow: 0px 8px 16px rgba(19, 35, 143, 0.7);
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      height: 280px; /* Reduced height by 15px */
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 10px 15px; /* Reduced padding by 15px */
+      text-align: center;
+      background-color: rgb(66, 65, 64);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .card-description {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin: 10px 0;
+    }
+
+    .card-price {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ff5722;
+      margin-top: 10px;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .buy-now-button,
+    .add-to-cart-button {
+      background-color: #0e055b;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      margin-bottom: 10px;
+    }
+
+    .buy-now-button:hover,
+    .add-to-cart-button:hover {
+      background-color: #0e126da6;
+    }
+
+    /* Fixed Cart Section */
+    .cart-info-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1rem;
+      z-index: 999;
+    }
+
+    .cart-info-container h2 {
+      margin: 0;
+    }
+
+    .cart-info-container p {
+      margin-top: 10px;
+    }
+
+
+        .features-section {
+        padding: 60px 0;
+        background: #141414;
+        text-align: center;
+        margin-top: 30px;
+        }
+
+        .features-section .section-header h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        }
+
+        .features-section .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-left: 84px;
+        padding-top: 30px;
+        }
+
+        .feature-box {
+        background-color: #00ff6a;
+        padding: 20px;
+        margin-right: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-box h3 {
+        font-size: 1.8rem;
+        margin-top: 10px;
+        }
+
+        .feature-box img{
+            height: 200px;
+            width: 200px;
+            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 15px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .features-section .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        .youtube-videos {
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(to right, #1e1e1e, #121212);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            margin: 20px auto;
+            width: 90%;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            color: #f3f9f3;
+            letter-spacing: 2px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Video Gallery */
+        .video-gallery {
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .video-card {
+            position: relative;
+            flex: 1 1 calc(25% - 20px);
+            max-width: 560px;
+            box-sizing: border-box;
+            background-color: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            animation: fadeInUp 1.5s ease-out forwards;
+            opacity: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .video-card:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-card {
+                flex: 1 1 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-card {
+                flex: 1 1 100%;
+            }
+        }
+
+        /* Animated Scroll Effect */
+        .scroll-fade {
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* YouTube-style Subscribe Button */
+        .subscribe-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            margin-top: 20px;
+            background-color: #cc0000; /* YouTube red */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .subscribe-btn:hover {
+            background-color: #ff0000;
+            transform: scale(1.05);
+        }
+
+        /* Subscribed State Animation */
+        .subscribed {
+            background-color: #4CAF50; /* Green */
+            transform: scale(1.05);
+            transition: transform 0.2s, background-color 0.3s ease;
+        }
+        .subscribed::before {
+            content: "✓ ";
+            font-size: 20px;
+        }
+
+
+        footer {
+            background: linear-gradient(135deg, #0a0f19, #1a2736); /* Dark background gradient */
+            color: #ffffff;
+            padding: 30px 0;
+            font-family: "Orbitron", sans-serif;
+        }
+
+               /* FAQ Section Styles */
+               #faq-section {
+            padding: 30px 15px;
+            text-align: center;
+            background: linear-gradient(to right, #333, #222);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+            border-radius: 15px;
+            margin: 30px auto;
+            width: 90%;
+            max-width: 1200px;
+            opacity: 0;
+            animation: fadeInSection 1.5s forwards;
+        }
+
+        .faq-title {
+            font-size: 30px;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            color: #f3f7f3;
+            letter-spacing: 2px;
+            animation: fadeInUp 1s ease-out;
+            font-weight: bold;
+        }
+
+        /* Styling for individual FAQ items */
+        .faq-item {
+            margin-bottom: 15px;
+            text-align: left;
+            background-color: #222;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            opacity: 0;
+            animation: fadeInItem 0.5s forwards;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Special animation on hover (scale and shadow effect) */
+        .faq-item:hover {
+            background-color: #333;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(7, 4, 20, 0.6);
+        }
+
+        /* Styling for questions */
+        .faq-question {
+            font-size: 15px;
+            font-weight: bold;
+            color: #f0f5f0;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+            padding: 5px 0;
+        }
+
+        .faq-question:hover {
+            color: #ffcc00; /* Yellow on hover */
+        }
+
+        /* Styling for answers */
+        .faq-answer {
+            display: none;
+            margin-top: 10px;
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.8;
+            padding-left: 15px;
+            border-left: 4px solid #00FF00; /* Green left border */
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .faq-answer.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Fade-in animation for section */
+        @keyframes fadeInSection {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Fade-in animation for each FAQ item */
+        @keyframes fadeInItem {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Animation for showing the FAQ content */
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        /* YouTube-style Subscribe Button */
+        .subscribe-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #cc0000; /* YouTube red */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s ease, box-shadow 0.3s;
+            text-decoration: none;
+            margin-top: 30px;
+        }
+
+        .subscribe-btn:hover {
+            background-color: #ff0000;
+            transform: scale(1.05);
+        }
+
+        .subscribe-btn:active {
+            transform: scale(1);
+        }
+
+        /* Responsive Design for FAQ */
+        @media (max-width: 768px) {
+            .faq-question {
+                font-size: 15px;
+            }
+
+            .faq-answer {
+                font-size: 14px;
+            }
+        }
+
+        /* Hover Effect for the FAQ Questions */
+        .faq-item:hover .faq-question {
+            color: #ffcc00; /* Yellow on hover */
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 20px;
+            height: 300px;
+        }
+
+        .footer-logo a {
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 30px;
+        text-decoration: none;
+        color: #0cbc61;
+        }
+
+        .footer-links {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        flex-wrap: wrap;
+        }
+
+        .footer-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        }
+
+        .footer-links h4 {
+        font-size: 16px;
+        color: #00ff80; /* Title color */
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        }
+
+        .footer-links li {
+        margin-bottom: 8px;
+        }
+
+        .footer-links a {
+        color: #ffffff;
+        font-size: 14px;
+        text-decoration: none;
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .footer-links a:hover {
+        color: #00ff80;
+        text-shadow: 0 0 10px #0cf2ff, 0 0 20px #00ff80;
+        }
+
+        .social-icons {
+        display: flex;
+        gap: 20px;
+        }
+
+        .social-icons a {
+        color: #00ff6a;
+        }
+       
+
+        .email input {
+        height: 40px;
+        width: 220px;
+        border: none;
+        border-radius: 5px;
+        padding: 0 10px;
+        background: #1a2736;
+        color: #9ca3af;
+        transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .email input:focus {
+        outline: none;
+        background: #00ff80;
+        box-shadow: 0 0 15px #00ff80;
+        color: black;
+        }
+
+        .footer-bottom {
+        background: #0a0f19; /* Slightly darker for the bottom */
+        padding-top: 30px;
+        text-align: center;
+        color: #9ca3af;
+        height: 200px;
+        }
+
+        .footer-bottom p {
+        font-size: 14px;
+        text-shadow: 0 0 8px #00ff80;
+        margin-top: 20px;
+        }
+
+        /* Mobile-friendly adjustments */
+        @media (max-width: 768px) {
+        .footer-links {
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-links ul {
+            text-align: center;
+        }
+    }
+
+    </style>
+    
+</head>
+<body>
+    <div id="preloader">
+        <h2>
+          <img src="public/images/logo.jpg" style="height: 70px; width: 70px; border-radius: 50%;">
+          Battle for Cash, Clash for Glory!
+        </h2>
+    </div>
+
+    <header>
+      <img src="public/images/logo.jpg" style="height: 40px; width: 40px; border-radius: 50%;">
+        <h1 style="margin-left: -420px;">ClashWin</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#game">Games</a></li>
+                <li><a href="#tournament">Tournaments</a></li>
+                <li><a href="#feature">Features</a></li>
+                <li><a href="#merchandise">Merchandise</a></li>
+                <li><a href="#faqs">FAQs</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero" id="home">
+        <div class="hero-left">
+            <div class="hero-content">
+                <h2>Battle for Cash, Clash for Glory!</h2>
+                <p>Join the most epic gaming tournaments. Level up your game today!</p>
+                <p><u style="font-size: 25px; color: #00d95c">Description:</u><br><br>
+                    ClashWin empowers aspiring gamers with thrilling tournaments, 
+                    essential resources, and a supportive community to break barriers, 
+                    balance commitments, and shine in esports. We're here to help you level up, 
+                    earn big, and redefine the world of gaming.
+                </p>
+                <a href="#tournament">Explore Tournaments</a>
+            </div>
+        </div>
+        <div class="hero-right">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/q2DaWIJb9PU?si=pnu-SMz8PzLwGUmY&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <section class="games-included" id="game">
+        <h2>Games Included</h2>
+        <div class="game-slider">
+          <button class="nav-button prev" onclick="navigateSlider(-1)">&#x2039;</button>
+          <div class="slider-wrapper">
+            <div class="slider">
+              <!-- Add Game Cards -->
+              <div class="game-card">
+                <img src="public/images/g1.jpg" alt="Deadlock">
+                <button class="play-now" onclick="location.href='Registration.html';">Play Now!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g2.jpg" alt="Apex Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g3.jpg" alt="Valorant">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g4.jpg" alt="Dota 2">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g5.jpg" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g6.jpg" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g7.png" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g8.jpg" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/g9.jpg" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/game9.jpeg" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+              <div class="game-card">
+                <img src="public/images/game10.jpeg" alt="League of Legends">
+                <button class="play-now">Upcoming Event!</button>
+              </div>
+            </div>
+          </div>
+          <button class="nav-button next" onclick="navigateSlider(1)">&#x203A;</button>
+        </div>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+    </section>
+
+    <!-- Service Cards Grid -->
+    <section class="tournament" id="tournament">
+      <!-- First Service Card -->
+      <div class="service-card">
+          <h3>$10 Entry Fee Tournament</h3>
+          <div class="price-pool">Price Pool: $5000</div>
+          <button class="join-button" onclick="location.href='Registration.html';">Join</button><br>
+          <button class="info-button">Info</button>
+          <div id="info1" class="info-content">
+              <p>Price distribution for $10 Tournament:</p>
+              <ul>
+                  <li>1st Place: $1200</li>
+                  <li>2nd Place: $700</li>
+                  <li>3rd Place: $400</li>
+                  <li>4th Place: $300</li>
+                  <li>5th Place: $200</li>
+                  <li>6th to 10th Place: $100 </li>
+                  <li>11th to 50th Place: $30 </li>
+                  <li>51th to 100th Place: $10</li>
+              </ul>
+          </div>
+      </div>
+
+            
+      <!-- Second Service Card -->
+      <div class="service-card">
+          <h3>$1 Entry Fee Tournament</h3>
+          <div class="price-pool">Price Pool: $500</div>
+          <button class="join-button" onclick="location.href='Registration.html';">Join</button><br>
+          <button class="info-button">Info</button>
+          <div id="info2" class="info-content">
+              <p>Price distribution for $1 Tournament:</p>
+              <ul>
+                  <li>1st Place: $120</li>
+                  <li>2nd Place: $70</li>
+                  <li>3rd Place: $40</li>
+                  <li>4th Place: $30</li>
+                  <li>5th Place: $20</li>
+                  <li>6th to 10th Place: $10 </li>
+                  <li>11th to 50th Place: $3 </li>
+                  <li>51th to 100th Place: $1</li>
+              </ul>
+          </div>
+      </div>
+      
+      <!-- Third Service Card -->
+      <div class="service-card">
+          <h3>Free Entry Tournament</h3>
+          <div class="price-pool">Top three performers will get free merchandise.</div>
+          <button class="join-button" onclick="location.href='Registration.html';">Join</button><br>
+          <button class="info-button">Info</button>
+          <div id="info3" class="info-content">
+              <p>Price distribution for Free Tournament:</p>
+              <ul>
+                  <li>1st Place: Exclusive merchandise</li>
+                  <li>2nd Place: Free entry to next tournament</li>
+                  <li>3rd Place: Discount voucher</li>
+              </ul>
+          </div>
+      </div>
+    </section>
+
+      
+
+    <section id="feature" class="features-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Key Features of ClashWin Tournament Platform</h2>
+            <p>Explore the powerful features that make ClashWin the ultimate gaming tournament platform.</p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-box">
+              <img src="public/images/am1.jpeg" alt="Matchmaking" class="feature-icon">
+              <h3>Automated Matchmaking</h3>
+              <p>Match with opponents based on skill level and preferences.</p>
+            </div>
+            <div class="feature-box">
+              <img src="public/images/stats.jpg" alt="Real-Time Stats" class="feature-icon">
+              <h3>Live Game Stats</h3>
+              <p>Access detailed player stats and track tournament progress in real-time.</p>
+            </div>
+            <div class="feature-box">
+              <img src="public/images/lb.jpg" alt="Leaderboards" class="feature-icon">
+              <h3>Global Leaderboards</h3>
+              <p>Check the global leaderboards to see the top players and teams.</p>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section id="youtube-videos" class="youtube-videos">
+        <h2 class="section-title scroll-fade">Live Stream from Our YouTube Channel</h2>
+
+        <div class="video-gallery">
+
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/fQel3FKOO68?si=EPE8y11ruGGbQUKs&autoplay=1"
+                    title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/zyA010_OvuE?si=1CS74ji1PV7XMnox&autoplay=1"
+                    title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/jKZZwq1hKBE?si=2q57qImi2QVHyHD7&autoplay=1"
+                    title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/Rmy0P7OD6FM?si=-diE3QFQMpmOSzvU&autoplay=1"
+                    title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- YouTube-style Subscribe Button -->
+         <a href="https://www.youtube.com/results?search_query=mrpc_bs">
+            <button id="subscribeButton" class="subscribe-btn" onclick="toggleSubscription()">Subscribe</button>
+         </a>
+        
+    </section>
+
+
+    <section id="merchandise">
+        <h1 style="font-size: 30px; color: #f2f7f2; margin-left: 40px;">ClashWin Merchandises</h1>
+        <div class="carousel-container">
+          <!-- Card 1 -->
+          <div class="card">
+            <img src="public/images/ClashWin_Merchandises/Cup_ClashWin2.png" alt="Clash Win Cup">
+            <div class="card-content">
+              <h3 class="card-title">Clash Win Cup</h3>
+              <p class="card-description">This is a high-quality ClashWin branded cup, perfect for your daily beverages!</p>
+              <p class="card-price">$3.99</p>
+            </div>
+            <div class="button-container">
+              <a href="https://example.com/cup" target="_blank">
+                <button class="buy-now-button" onclick="location.href='Registration2.html';">Buy Now</button>
+              </a>
+              <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+          </div>
+    
+          <!-- Card 2 -->
+          <div class="card">
+            <img src="public/images/ClashWin_Merchandises/Hoodie_ClashWin2.png" alt="ClashWin Hoodie">
+            <div class="card-content">
+              <h3 class="card-title">Hoodie</h3>
+              <p class="card-description">Stay cozy and stylish with this soft, warm hoodie featuring the ClashWin logo.</p>
+              <p class="card-price">$9.99</p>
+            </div>
+            <div class="button-container">
+              <a href="https://example.com/hoodie" target="_blank">
+                <button class="buy-now-button" onclick="location.href='Registration2.html';">Buy Now</button>
+              </a>
+              <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+          </div>
+    
+          <!-- Card 3 -->
+          <div class="card">
+            <img src="public/images/ClashWin_Merchandises/Socks_CashWin2.png" alt="ClashWin Socks">
+            <div class="card-content">
+              <h3 class="card-title">Socks</h3>
+              <p class="card-description">Comfortable and breathable ClashWin socks to keep your feet fresh all day.</p>
+              <p class="card-price">$3.50</p>
+            </div>
+            <div class="button-container">
+              <a href="https://example.com/socks" target="_blank">
+                <button class="buy-now-button" onclick="location.href='Registration2.html';">Buy Now</button>
+              </a>
+              <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+          </div>
+    
+          <!-- Card 4 -->
+          <div class="card">
+            <img src="public/images/ClashWin_Merchandises/Cap_Merchandise_ClashWin4.png" alt="ClashWin Cap">
+            <div class="card-content">
+              <h3 class="card-title">Cap</h3>
+              <p class="card-description">Look cool and protect yourself from the sun with these stylish ClashWin caps.</p>
+              <p class="card-price">$4.99</p>
+            </div>
+            <div class="button-container">
+              <a href="https://example.com/caps" target="_blank">
+                <button class="buy-now-button" onclick="location.href='Registration2.html';">Buy Now</button>
+              </a>
+              <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+          </div>
+    
+          <!-- Card 5 -->
+          <div class="card">
+            <img src="public/images/ClashWin_Merchandises/ClashWin_bottle.png" alt="ClashWin Bottle">
+            <div class="card-content">
+              <h3 class="card-title">Bottle</h3>
+              <p class="card-description">Stay hydrated with this durable ClashWin water bottle, perfect for every adventure.</p>
+              <p class="card-price">$5.99</p>
+            </div>
+            <div class="button-container">
+              <a href="https://example.com/movie8" target="_blank">
+                <button class="buy-now-button" onclick="location.href='Registration2.html';">Buy Now</button>
+              </a>
+              <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+          </div>
+    
+          <!-- Card 6 -->
+          <div class="card">
+            <img src="public/images/ClashWin_Merchandises/ClashWin_Tshirt.png" alt="ClashWin T-Shirt">
+            <div class="card-content">
+              <h3 class="card-title">ClashWin T-Shirt</h3>
+              <p class="card-description">A comfortable and breathable T-shirt featuring the iconic ClashWin logo. Perfect for everyday wear and casual outings.</p>
+              <p class="card-price">$3.49</p>
+            </div>
+            <div class="button-container">
+              <a href="https://example.com/tshirt" target="_blank">
+                <button class="buy-now-button" onclick="location.href='Registration2.html';">Buy Now</button>
+              </a>
+              <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Fixed Cart Section in Top-Right -->
+      <div class="cart-info-container">
+        <span class="bi bi-cart-check-fill">Cart</span>
+      </div>
+
+
+    <footer id="faqs">
+
+      <section id="faq-section">
+        <h2 class="faq-title scroll-fade">Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">What is this esports YouTube channel about?</div>
+            <div class="faq-answer">
+                This channel is dedicated to competitive esports gaming. We provide content related to popular games, including gameplays, tournament highlights, guides, tips, and tutorials. Our goal is to create a community of passionate gamers who are eager to improve and enjoy the competitive scene.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How do I join the esports community?</div>
+            <div class="faq-answer">
+                Joining our esports community is easy! Simply subscribe to our channel, hit the notification bell, and get involved by commenting and interacting with fellow gamers. We also host community events, gaming challenges, and tournaments where you can participate.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Do you host esports tournaments or competitions?</div>
+            <div class="faq-answer">
+                Yes, we regularly organize esports tournaments and competitions across multiple games. Subscribe to stay updated on upcoming events, registration details, and how to get involved. You can find tournament announcements in our community posts and videos.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What kind of gaming content can I expect on your channel?</div>
+            <div class="faq-answer">
+                On our channel, we post a variety of esports content such as live streams, gameplay tutorials, strategy breakdowns, tournament highlights, and game reviews. Whether you're a casual gamer or a competitive player, we offer something for everyone.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Is there any way to get exclusive content or benefits?</div>
+            <div class="faq-answer">
+                Yes! By subscribing and becoming a part of our community, you'll get access to exclusive content like behind-the-scenes footage, early access to tournament sign-ups, and special giveaways. We also offer content tailored specifically to our most engaged followers.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How can I support the channel and the esports community?</div>
+            <div class="faq-answer">
+                You can support us by subscribing to the channel, turning on notifications, and sharing our videos with friends. For more direct support, consider becoming a channel member or contributing to our esports events. Your involvement helps us grow and keep delivering great content!
+            </div>
+        </div>
+
+        <!-- YouTube-style Subscribe Button -->
+        <a href="https://www.youtube.com/@MrPC_CR" target="_blank" class="subscribe-btn">Subscribe to MrPC's Esports Channel</a>
+    </section>
+
+        <div class="footer-top">
+          <div class="footer-logo" style="margin-left: 500px;">
+            <a href="#">Contact-</a>
+          </div>
+          <div class="footer-links" style="margin-top: 70px; margin-left: -550px;">
+            <ul>
+              <h4>Company</h4>
+              <li><a href="#">Teams</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact us</a></li>
+              <li><a href="#">Support</a></li>
+            </ul>
+            <ul>
+              <h4>About</h4>
+              <li><a href="#">Company</a></li>
+              <li><a href="#">Location</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Our Services</a></li>
+            </ul>
+            <ul>
+              <h4>Contact us</h4>
+              <li><p>+91-999-8888-777</p></li>
+              <li><p>Bangalore, Karnataka</p></li>
+              <li><p>India</p></li>
+            </ul>
+            <ul>
+                <h4>Explore</h4>
+                <li><a href="#">Collections</a></li>
+                <li><a href="#">Item Detail</a></li>
+                <li><a href="#">Collectibles</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+            <ul>
+                <h4>Support</h4>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-links">
+            <ul class="social">
+              <h4 style="font-size: 25px;">Social:</h4>
+              <div class="social-icons">
+                <a href="https://www.instagram.com/mrpcesports?igsh=MTQ1aGNtdGFvNWpzcA=="><i class="bi bi-instagram" style="font-size: 35px;"></i></a>
+                <a href="https://www.youtube.com/@MrPC_CR"><i class="bi bi-youtube" style="font-size: 35px;"></i></a>
+                <a href="#"><i class="bi bi-facebook" style="font-size: 35px;"></i></a>
+                <a href="#"><i class="bi bi-twitter" style="font-size: 35px;"></i></a>
+              </div>
+            </ul>
+            <ul class="language">
+                <h4 style="font-size: 25px;">Language:</h4>
+                <select name="language" id="language-select" style="padding: 5px; font-size: 16px;">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="zh">Chinese</option>
+                </select>
+            </ul>
+          </div>
+        </div>
+    </footer>
+      
+    <script>
+        window.addEventListener("load", () => {
+            const preloader = document.getElementById("preloader");
+            preloader.classList.add("hidden");
+            document.body.classList.add("loaded");
+        });
+
+        const swiper = new Swiper('.swiper', {
+            effect: 'fade', // Smooth fade effect
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            fadeEffect: {
+                crossFade: true,
+            },
+        });
+
+        let currentIndex = 0;
+
+            function navigateSlider(direction) {
+            const slider = document.querySelector('.slider');
+            const totalCards = slider.children.length;
+            const visibleCards = 5; // Number of cards visible at once
+            const maxIndex = Math.ceil(totalCards / visibleCards) - 1;
+
+            // Update current index based on direction
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+
+            // Update slider position
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            // Update progress bar
+            const progress = document.querySelector('.progress');
+            progress.style.width = `${((currentIndex + 1) / (maxIndex + 1)) * 100}%`;
+        }
+
+         // Function to toggle the visibility of the info content
+         function toggleInfo(infoId) {
+            const infoElement = document.getElementById(infoId);
+            // Toggle display of the info content (show/hide)
+            if (infoElement.style.display === "none" || infoElement.style.display === "") {
+                infoElement.style.display = "block";
+            } else {
+                infoElement.style.display = "none";
+            }
+        }
+
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        const faqAnswers = document.querySelectorAll('.faq-answer');
+
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const currentAnswer = question.nextElementSibling;
+                const currentlyOpen = currentAnswer.classList.contains('show');
+                
+                // Close all answers first
+                faqAnswers.forEach(answer => {
+                    answer.classList.remove('show');
+                });
+
+                // If the clicked question's answer wasn't already open, show it
+                if (!currentlyOpen) {
+                    currentAnswer.classList.add('show');
+                }
+            });
+        });
+
+        // Trigger animations on page load for each FAQ item
+        window.addEventListener('load', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.animation = 'fadeInItem 0.5s forwards';
+                }, index * 200); // Delay for each item
+            });
+        });
+
+
+    </script>
+</body>
+</html>
